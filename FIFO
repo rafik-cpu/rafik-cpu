@@ -1,0 +1,43 @@
+#include <stdio.h>
+
+int main() {
+    int i, j, n, ref_str[100], frames[10], num_frames, k = 0, avail = 0, f_count = 0;
+    printf("Enter the number of elements: \n");
+    scanf("%d", &n);
+    printf("Enter the elements of the array:\n");
+    for(i = 0; i < n; i++) {
+        scanf("%d", &ref_str[i]);
+    }
+    printf("Enter the number of frames: \n");
+    scanf("%d", &num_frames);
+    for(j = 0; j < num_frames; j++) {
+        frames[j] = -1;
+    }
+    for(k = 0; k < n; k++) {
+        int page_fault = 1;
+        for(j = 0; j < num_frames; j++) {
+            if(ref_str[k] == frames[j]) {
+                avail++;
+                page_fault = 0;
+                break;
+            }
+        }
+        if(page_fault == 1) {
+            for(j = 0; j < num_frames; j++) {
+                if(frames[j] == -1) {
+                    frames[j] = ref_str[k];
+                    break;
+                }
+            }
+            if(j == num_frames) {
+                for(j = 0; j < num_frames - 1; j++) {
+                    frames[j] = frames[j + 1];
+                }
+                frames[num_frames - 1] = ref_str[k];
+            }
+            f_count++;
+        }
+    }
+    printf("We have %d hits and %d misses.\n", avail, f_count);
+    return 0;
+}
